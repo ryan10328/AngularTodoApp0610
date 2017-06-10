@@ -7,7 +7,7 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('myfooter') footer: FooterComponent;
+  // @ViewChild('myfooter') footer: FooterComponent;
 
   inputHint: string = 'What needs to be done???';
   myColSpan: number = 2;
@@ -24,7 +24,7 @@ export class AppComponent {
       this.todo = '';
     }
 
-    this.footer.hello();
+    // this.footer.hello();
   }
 
   clearCompleted() {

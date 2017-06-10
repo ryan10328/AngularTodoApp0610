@@ -23,7 +23,7 @@
                                                  '#d9d9d9': '' }">-->
         <div class="view">
           <input class="toggle" type="checkbox" [(ngModel)]="item.done">
-          <label>{{ item.todo }}</label>
+          <label>{{ item.todo | upper }}</label>
           <button class="destroy"></button>
         </div>
         <input class="edit" value="Create a TodoMVC template">
