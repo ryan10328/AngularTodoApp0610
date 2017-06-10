@@ -8,15 +8,17 @@ import { Component } from '@angular/core';
 export class AppComponent {
   inputHint: string = 'What needs to be done???';
   myColSpan: number = 2;
+  todo: string;
   todos: any[] = [];
 
-  addTodo(evt: KeyboardEvent) {
-    let input = evt.target as HTMLInputElement;
-    if (input.value) {
+  addTodo() {
+    // let input = evt.target as HTMLInputElement;
+    if (this.todo) {
       // this.todos.push(input.value);
-      this.todos = [...this.todos, input.value];
+      this.todos = [...this.todos, this.todo];
 
-      input.value = '';
+      // input.value = '';
+      this.todo = '';
     }
   }
 }
