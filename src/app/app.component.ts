@@ -15,7 +15,7 @@ export class AppComponent {
     // let input = evt.target as HTMLInputElement;
     if (this.todo) {
       // this.todos.push(input.value);
-      this.todos = [...this.todos, this.todo];
+      this.todos = [...this.todos, { todo: this.todo, done: false }];
 
       // input.value = '';
       this.todo = '';
