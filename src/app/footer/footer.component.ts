@@ -37,4 +37,8 @@ export class FooterComponent implements OnInit {
     this.onClearCompeted.emit();
   }
 
+  hello() {
+    console.log('Hello, Angular4');
+  }
+
 }
