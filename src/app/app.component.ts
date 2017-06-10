@@ -1,10 +1,10 @@
+import { DataService } from './data.service';
 import { FooterComponent } from './footer/footer.component';
 import { Component, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/rx';
 import { Observable } from "rxjs/Observable";
 
-const BASE_URL: string = 'http://localhost:3000/todos';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,9 @@ const BASE_URL: string = 'http://localhost:3000/todos';
 })
 export class AppComponent {
 
-  constructor(private http: Http) {
-    this.getTodos().subscribe(data => this.todos = data);
+  constructor(private http: Http,
+    private dataService: DataService) {
+    this.dataService.getTodos().subscribe(data => this.todos = data);
   }
 
   // @ViewChild('myfooter') footer: FooterComponent;
@@ -25,10 +26,6 @@ export class AppComponent {
   todos: any[] = [];
   isToggleAll: boolean = false;
 
-  getTodos(): Observable<any[]> {
-    return this.http.get(BASE_URL)
-      .map(data => data.json());
-  }
 
   addTodo() {
     // let input = evt.target as HTMLInputElement;
@@ -36,8 +33,7 @@ export class AppComponent {
       //  this.todos.push(input.value);
       // this.todos = [...this.todos, { todo: this.todo, done: false }];
 
-      this.http.post(BASE_URL, { todo: this.todo, done: false })
-        .concatMap(data => this.getTodos())
+      this.dataService.addTodo(this.todo)
         .subscribe(data => this.todos = data);
 
       // input.value = '';
@@ -50,14 +46,7 @@ export class AppComponent {
   clearCompleted() {
     this.todos = this.todos.filter(data => data.done);
 
-    let obs: any[] = [];
-    this.todos.forEach(data => {
-      let req = this.http.delete(`${BASE_URL}/${data.id}`);
-      obs.push(req);
-    });
-
-    Observable.forkJoin(obs)
-      .concatMap(data => this.getTodos())
+    this.dataService.clearCompleted(this.todos)
       .subscribe(data => this.todos = data);
 
   }
@@ -75,28 +64,18 @@ export class AppComponent {
     });
 
 
-    let obs: any[] = [];
-    this.todos.forEach(data => {
-      let req = this.http.put(`${BASE_URL}/${data.id}`,
-        { todo: data.todo, done: data.done });
-      obs.push(req);
-    });
-
-    Observable.forkJoin(obs)
-      .concatMap(data => this.getTodos())
+    this.dataService.toggleAll(this.todos)
       .subscribe(data => this.todos = data);
   }
 
   deleteTodo(item) {
     // this.todos = this.todos.filter(data => item != data);
-    this.http.delete(`${BASE_URL}/${item.id}`)
-      .concatMap(data => this.getTodos())
+    this.dataService.deleteTodo(item)
       .subscribe(data => this.todos = data);
   }
 
   toggleSingleTodo(item) {
-    this.http.put(`${BASE_URL}/${item.id}`, { done: item.done, todo: item.todo })
-      .concatMap(data => this.getTodos())
+    this.dataService.toggleSingleTodo(item)
       .subscribe(data => this.todos = data);
   }
 }
