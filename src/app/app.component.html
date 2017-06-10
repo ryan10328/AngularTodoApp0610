@@ -16,7 +16,7 @@
 
       <!--color: #d9d9d9;
 	text-decoration: line-through;-->
-      <li *ngFor="let item of todos" [ngClass]="{'completed': item.done }">
+      <li *ngFor="let item of todos | filter: selectedType" [ngClass]="{'completed': item.done }">
         <!--<li *ngFor="let item of todos" [ngStyle]="{'text-decoration': item.done ?
                                                  'line-through' : '',
                                                 'color' : item.done ?
@@ -31,7 +31,7 @@
     </ul>
   </section>
   <!-- This footer should hidden by default and shown when there are todos -->
-  <app-footer [todos]="todos" (onClearCompeted)="clearCompleted()" #myfooter></app-footer>
+  <app-footer [todos]="todos" (onClearCompeted)="clearCompleted()" (onSelectTypeChange)="onSelectedType($event)" #myfooter></app-footer>
 </section>
 <footer class="info">
   <p>Double-click to edit a todo</p>

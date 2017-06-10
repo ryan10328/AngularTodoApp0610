@@ -26,7 +26,9 @@ export class FooterComponent implements OnInit {
     this._todos = value;
   }
 
+  selectedType: string = 'all';
   @Output() onClearCompeted = new EventEmitter();
+  @Output() onSelectTypeChange = new EventEmitter();
 
   constructor() { }
 
@@ -39,6 +41,11 @@ export class FooterComponent implements OnInit {
 
   hello() {
     console.log('Hello, Angular4');
+  }
+
+  onSelectedType(type) {
+    this.selectedType = type;
+    this.onSelectTypeChange.emit(type);
   }
 
 }

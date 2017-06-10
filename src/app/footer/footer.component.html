@@ -4,13 +4,13 @@
   <!-- Remove this if you don't implement routing -->
   <ul class="filters">
     <li>
-      <a class="selected" href="#/">All</a>
+      <a (click)="onSelectedType('all')" [ngClass]="{'selected': selectedType === 'all'}">All</a>
     </li>
     <li>
-      <a href="#/active">Active</a>
+      <a (click)="onSelectedType('active')" [ngClass]="{'selected': selectedType === 'active'}">Active</a>
     </li>
     <li>
-      <a href="#/completed">Completed</a>
+      <a (click)="onSelectedType('completed')" [ngClass]="{'selected': selectedType === 'completed'}">Completed</a>
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->

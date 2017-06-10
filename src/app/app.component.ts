@@ -8,7 +8,7 @@ import { Component, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   // @ViewChild('myfooter') footer: FooterComponent;
-
+  selectedType: string = 'all';
   inputHint: string = 'What needs to be done???';
   myColSpan: number = 2;
   todo: string;
@@ -29,5 +29,10 @@ export class AppComponent {
 
   clearCompleted() {
     this.todos = this.todos.filter(data => !data.done);
+  }
+
+  onSelectedType(evt) {
+    console.log(evt);
+    this.selectedType = evt;
   }
 }
