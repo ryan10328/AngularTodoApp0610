@@ -22,7 +22,7 @@
                                                 'color' : item.done ?
                                                  '#d9d9d9': '' }">-->
         <div class="view">
-          <input class="toggle" type="checkbox" [(ngModel)]="item.done">
+          <input class="toggle" type="checkbox" [(ngModel)]="item.done" (change)="toggleSingleTodo(item)">
           <label>{{ item.todo | upper }}</label>
           <button class="destroy" (click)="deleteTodo(item)"></button>
         </div>
