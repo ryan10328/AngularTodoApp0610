@@ -1,5 +1,6 @@
 import { FooterComponent } from './footer/footer.component';
 import { Component, ViewChild } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +8,18 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(private http: Http) {
+
+  }
+
   // @ViewChild('myfooter') footer: FooterComponent;
   selectedType: string = 'all';
   inputHint: string = 'What needs to be done???';
   myColSpan: number = 2;
   todo: string;
   todos: any[] = [];
+  isToggleAll: boolean = false;
 
   addTodo() {
     // let input = evt.target as HTMLInputElement;
@@ -34,5 +41,17 @@ export class AppComponent {
   onSelectedType(evt) {
     console.log(evt);
     this.selectedType = evt;
+  }
+
+  toggleAll() {
+    this.todos = this.todos.map(item => {
+      return item.done === this.isToggleAll ?
+        { todo: item.todo, done: item.done } :
+        { todo: item.todo, done: !item.done };
+    });
+  }
+
+  deleteTodo(item) {
+    this.todos = this.todos.filter(data => item != data);
   }
 }
