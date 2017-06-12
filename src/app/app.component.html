@@ -1,7 +1,7 @@
 <section class="todoapp">
   <header class="header">
     <app-title></app-title>
-    <input class="new-todo" [placeholder]="inputHint" autofocus (keyup.enter)="addTodo()" [ngModel]="todo" (ngModelChange)="todo = $event">
+    <input class="new-todo" [placeholder]="inputHint" autofocus (keyup.enter)="addTodo()" [ngModel]="todo" (ngModelChange)="todo = $event; todoChange();">
     <!--<input class="new-todo" [placeholder]="inputHint" autofocus (keyup.enter)="addTodo()" [(ngModel)]="todo">-->
     <!--<input class="new-todo" [placeholder]="inputHint" autofocus [attr.data-myhint]="inputHint">-->
   </header>

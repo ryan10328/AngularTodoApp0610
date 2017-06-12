@@ -16,6 +16,26 @@ export class AppComponent {
   constructor(private http: Http,
     private dataService: DataService) {
     this.dataService.getTodos().subscribe(data => this.todos = data);
+
+    // 當發現 localStorage 裡面有東西就取出來
+    let storedTodo = localStorage.getItem('todo');
+    if (storedTodo) {
+      this.todo = storedTodo;
+    }
+
+    // 任務 15 進階練習 - 每 15 秒儲存一次
+    setInterval(() => {
+      console.log(`每 15 秒儲存一次: ${this.todo}`);
+      // 當 todo 裡面有東西且和原本存的不一樣才存
+      localStorage.setItem('todo', this.todo ? this.todo : '');
+    }, 15000);
+
+
+  }
+  // 任務 16 進階練習 - 資料發生異動時儲存一次
+  todoChange() {
+    console.log(`資料發生異動儲存一次: ${this.todo}`);
+    localStorage.setItem('todo', this.todo ? this.todo : '');
   }
 
   // @ViewChild('myfooter') footer: FooterComponent;
