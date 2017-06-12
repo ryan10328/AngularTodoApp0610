@@ -1,29 +1,19 @@
 import { DataService } from './data.service';
 import { FooterComponent } from './footer/footer.component';
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Subject, Observable } from "rxjs/rx";
-
+import * as toastr from 'toastr';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild('editInput') editTextInput: ElementRef;
+export class AppComponent implements OnInit {
 
-  ngAfterViewInit() {
-    setTimeout(() => { // 使用 setTimeout 等 1 秒之後才會有 editInput
-      Observable.fromEvent(this.editTextInput.nativeElement, 'keyup') // 取得畫面上的 editInput (利用範本參考變數)
-        .debounceTime(1000) // 使用 debounceTime 設定如果 1 秒沒有動作
-        .concatMap(data => this.dataService.batchSaveTodos(this.todos)) // 就呼叫 dataService.batchSaveTodos(this.todos) 進行儲存
-        .do(() => {
-          // 自動提示
-          
-        })
-        .subscribe();
-    }, 1000);
+  ngOnInit() {
+    this.dataService.todoListObs.subscribe();
   }
 
   // @ViewChild('myfooter') footer: FooterComponent;
@@ -33,7 +23,6 @@ export class AppComponent implements AfterViewInit {
   todo: string;
   todos: any[] = [];
   isToggleAll: boolean = false;
-
 
   constructor(private http: Http,
     private dataService: DataService) {
@@ -50,6 +39,8 @@ export class AppComponent implements AfterViewInit {
       console.log(`每 15 秒儲存一次: ${this.todo}`);
       // 當 todo 裡面有東西且和原本存的不一樣才存
       localStorage.setItem('todo', this.todo ? this.todo : '');
+      toastr.success('儲存成功');
+
     }, 15000);
 
   }
@@ -60,16 +51,28 @@ export class AppComponent implements AfterViewInit {
   }
 
   batchSaveTodos() {
-    this.dataService.batchSaveTodos(this.todos).subscribe();
+    this.dataService.todoSubject.next(this.todos);
+    // this.dataService.batchSaveTodos(this.todos).subscribe();
   }
 
-
+  todoItemChange() {
+    this.dataService.todoSubject.next(this.todos);
+  }
 
   enterEdit(item) {
     // 如果 item.todo 裡面原本就有東西，就把他放到 editText 裡面
-    item.editText = item.todo;
-    item.editMode = true;
-    this.batchSaveTodos();
+
+    let hasEditData = this.todos.filter(data => data.editMode);
+
+    if (hasEditData.length === 0) {
+      item.editText = item.todo;
+      item.editMode = true;
+      this.batchSaveTodos();
+    }
+    else {
+      toastr.warning('一次只能編輯一個 TODO');
+    }
+
   }
 
   completeEdit(item) {

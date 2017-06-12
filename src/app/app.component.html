@@ -26,7 +26,7 @@
           <label>{{ item.todo }}</label>
           <button class="destroy" (click)="deleteTodo(item)"></button>
         </div>
-        <input class="edit" (keyup.enter)="completeEdit(item)" (keyup.esc)="cancelEdit(item)" [(ngModel)]="item.editText" #editInput>
+        <input class="edit" (keyup.enter)="completeEdit(item)" (keyup.esc)="cancelEdit(item)" [(ngModel)]="item.editText" (ngModelChange)="todoItemChange()">
       </li>
     </ul>
   </section>
@@ -48,5 +48,3 @@
     <td>One Column</td>
   </tr>
 </table>-->
-
-{{ todos | json }}

@@ -21,8 +21,11 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "@types/toastr": "^2.1.33",
     "core-js": "^2.4.1",
+    "jquery": "^3.2.1",
     "rxjs": "^5.1.0",
+    "toastr": "^2.1.2",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

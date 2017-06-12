@@ -2,6 +2,7 @@ import { Subject } from 'rxjs/rx';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from "rxjs/Rx";
+import * as toastr from 'toastr';
 
 const BASE_URL: string = 'http://localhost:3000/todos';
 
@@ -9,10 +10,17 @@ const BASE_URL: string = 'http://localhost:3000/todos';
 @Injectable()
 export class DataService {
 
-  private todosSubject = new Subject<any[]>();
+  todoSubject = new Subject<any[]>();
   todoListObs: Observable<any>;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+
+    this.todoListObs = this.todoSubject
+      .debounceTime(1000)
+      .concatMap(data => this.batchSaveTodos(data))
+      .do(() => toastr.success('儲存成功'));
+
+  }
 
   getTodos(): Observable<any[]> {
     return this.http.get(BASE_URL)
