@@ -16,17 +16,17 @@
 
       <!--color: #d9d9d9;
 	text-decoration: line-through;-->
-      <li *ngFor="let item of todos | filter: selectedType" [ngClass]="{'completed': item.done }">
+      <li *ngFor="let item of todos | filter: selectedType" [ngClass]="{'completed': item.done, 'editing': item.editMode }">
         <!--<li *ngFor="let item of todos" [ngStyle]="{'text-decoration': item.done ?
                                                  'line-through' : '',
                                                 'color' : item.done ?
                                                  '#d9d9d9': '' }">-->
-        <div class="view">
+        <div class="view" (dblclick)="enterEdit(item)">
           <input class="toggle" type="checkbox" [(ngModel)]="item.done" (change)="toggleSingleTodo(item)">
-          <label>{{ item.todo | upper }}</label>
+          <label>{{ item.todo }}</label>
           <button class="destroy" (click)="deleteTodo(item)"></button>
         </div>
-        <input class="edit" value="Create a TodoMVC template">
+        <input class="edit" (keyup.enter)="completeEdit(item)" (keyup.esc)="cancelEdit(item)" [(ngModel)]="item.editText" #editInput>
       </li>
     </ul>
   </section>
@@ -48,3 +48,5 @@
     <td>One Column</td>
   </tr>
 </table>-->
+
+{{ todos | json }}
